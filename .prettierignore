@@ -1,0 +1,51 @@
+# Dependencies
+node_modules/
+
+# Production build
+.next/
+out/
+build/
+dist/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+test-results/
+playwright-report/
+
+# 초기 데이터의 원본 자료
+IT_link*.html
+
+# 도구 설정과 기존 가이드 문서
+.claude/
+.vscode/
+docs/guides/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Package lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Generated files
+next-env.d.ts
