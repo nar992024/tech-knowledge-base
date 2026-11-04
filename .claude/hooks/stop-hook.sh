@@ -33,13 +33,13 @@ echo "DEBUG: PROJECT_NAME = '$PROJECT_NAME'" >&2
 echo "DEBUG: TIMESTAMP = '$TIMESTAMP'" >&2
 
 # JSON payload 생성
-PAYLOAD=$(printf '{"channel": "#claude-code", "username": "Claude Code", "text": "✅ 작업 완료 알림\n\n프로젝트: %s\n상태: %s\n시간: %s\n\nClaude Code 작업이 완료되었습니다.", "icon_emoji": ":white_check_mark:"}' "$PROJECT_NAME" "$REASON" "$TIMESTAMP")
+PAYLOAD=$(printf '{"channel": "#claude-notifications", "username": "Claude Code", "text": "✅ 작업 완료 알림\n\n프로젝트: %s\n이벤트: %s\n시간: %s\n\nClaude Code 작업이 완료되었습니다.", "icon_emoji": ":white_check_mark:"}' "$PROJECT_NAME" "$REASON" "$TIMESTAMP")
 
 echo "DEBUG: PAYLOAD = '$PAYLOAD'" >&2
 
-# Slack으로 알림 전송
-curl -X POST \
-  --data-urlencode "payload=$PAYLOAD" \
+# Slack으로 알림 전송 (Windows에서 명령 인자로 넘기면 한글이 깨지므로 표준 입력으로 보낸다)
+printf '%s' "$PAYLOAD" | curl -fsS -m 10 -X POST \
+  --data-urlencode "payload@-" \
   "$SLACK_WEBHOOK_URL" > /dev/null 2>&1
 
 # 성공 여부 확인
