@@ -32,9 +32,8 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# 환경 변수 (예시 파일만 저장소에 포함)
+# 환경 변수
 .env*
-!.env.local.example
 
 # vercel
 .vercel
