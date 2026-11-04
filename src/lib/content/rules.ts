@@ -22,12 +22,12 @@ export function buildSiteContent(raw: RawContent): {
   const warnings: string[] = []
   const publishedLinks = raw.links.filter(link => link.published)
 
-  // 공개 코스에는 검증을 마친 공개 링크만 노출하고, 보여 줄 단계가 없는 코스는 숨긴다
+  // 공개 코스에는 공개 링크를 모두 노출하고(검증 여부는 배지로 구분), 보여 줄 단계가 없는 코스는 숨긴다
   const courses: SiteCourse[] = raw.courses
     .filter(course => course.published)
     .map(course => {
       const steps = publishedLinks
-        .filter(link => link.course === course.slug && link.verified)
+        .filter(link => link.course === course.slug)
         .filter(isCourseStep)
         .sort(byOrderThenId)
 

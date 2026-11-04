@@ -84,6 +84,11 @@ export default async function CoursePage({ params }: CoursePageProps) {
           ))}
         </ol>
       </section>
+
+      <p className="text-muted-foreground mt-10 border-t pt-6 text-sm">
+        외부 자료의 내용은 변경될 수 있으며, 검증 완료 표시가 없는 자료는 내용을
+        직접 확인하지 않았습니다.
+      </p>
     </Container>
   )
 }

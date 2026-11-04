@@ -15,7 +15,7 @@ export default async function HomePage() {
     <Container className="py-10 sm:py-14">
       <section className="max-w-3xl">
         <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-          무엇을 어떤 순서로 공부할지 코스로 안내합니다
+          AI 코딩과 에이전트 개발, 코스로 차근차근 배워 보세요
         </h1>
         <p className="text-muted-foreground mt-4 text-lg">{SITE_DESCRIPTION}</p>
         <Button asChild variant="outline" className="mt-6">

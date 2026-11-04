@@ -1,8 +1,7 @@
-import { BadgeCheck } from 'lucide-react'
 import Link from 'next/link'
 import { ExternalLinkButton } from '@/components/link/external-link-button'
 import { LinkBadges } from '@/components/link/link-badges'
-import { Badge } from '@/components/ui/badge'
+import { VerifiedBadge } from '@/components/link/verified-badge'
 import type { LibraryLink } from '@/types/content'
 
 export function LibraryCard({ link }: { link: LibraryLink }) {
@@ -12,12 +11,7 @@ export function LibraryCard({ link }: { link: LibraryLink }) {
         <span className="text-muted-foreground text-sm font-medium">
           {link.category}
         </span>
-        {link.verified && (
-          <Badge variant="secondary">
-            <BadgeCheck aria-hidden="true" />
-            검증 완료
-          </Badge>
-        )}
+        {link.verified && <VerifiedBadge />}
       </div>
       <h2 className="mt-2 text-lg font-bold break-words">{link.title}</h2>
       <p className="mt-1 flex-1">{link.purpose}</p>

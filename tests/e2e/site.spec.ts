@@ -33,7 +33,7 @@ test.describe('코스', () => {
     await expect(original).toHaveAttribute('rel', 'noopener noreferrer')
   })
 
-  test('검증 완료 단계만 표시하고, 단계가 없는 코스는 숨긴다', async ({
+  test('공개 단계를 모두 표시하고 검증 완료 단계에만 배지를 붙인다', async ({
     page,
   }) => {
     await page.goto('/')
@@ -41,21 +41,26 @@ test.describe('코스', () => {
       'Claude Code 입문',
       'AI 에이전트 엔지니어링',
       'AI 코드 품질과 테스트',
+      '스탠퍼드 CS146S',
+      '온톨로지와 지식그래프',
     ])
 
     await page.goto('/courses/ai-code-quality')
-    await expect(page.getByText('인프런 Playwright 기초')).toHaveCount(0)
-    await expect(page.getByRole('listitem')).toHaveCount(2)
+    await expect(
+      page.getByRole('heading', { name: /인프런 Playwright 기초/ })
+    ).toBeVisible()
+    await expect(page.getByRole('listitem')).toHaveCount(5)
+    await expect(page.getByText('검증 완료', { exact: true })).toHaveCount(2)
+    await expect(page.getByText('미검증')).toHaveCount(0)
+    await expect(page.getByText(/검증 완료 표시가 없는 자료/)).toBeVisible()
   })
 
-  test('없는 코스와 숨긴 코스는 404를 보여 준다', async ({ page }) => {
-    for (const slug of ['no-such-course', 'stanford-cs146s']) {
-      const response = await page.goto(`/courses/${slug}`)
-      expect(response?.status()).toBe(404)
-      await expect(
-        page.getByRole('heading', { name: '페이지를 찾을 수 없습니다' })
-      ).toBeVisible()
-    }
+  test('없는 코스는 404를 보여 준다', async ({ page }) => {
+    const response = await page.goto('/courses/no-such-course')
+    expect(response?.status()).toBe(404)
+    await expect(
+      page.getByRole('heading', { name: '페이지를 찾을 수 없습니다' })
+    ).toBeVisible()
     await page.getByRole('link', { name: '코스 목록으로 돌아가기' }).click()
     await expect(page).toHaveURL('/')
   })
@@ -192,7 +197,7 @@ test.describe('품질', () => {
     const sitemap = await (await request.get('/sitemap.xml')).text()
     expect(sitemap).toContain('/courses/claude-code-basics')
     expect(sitemap).toContain('/library')
-    expect(sitemap).not.toContain('/courses/stanford-cs146s')
+    expect(sitemap).toContain('/courses/stanford-cs146s')
 
     const robots = await (await request.get('/robots.txt')).text()
     expect(robots).toContain('sitemap.xml')

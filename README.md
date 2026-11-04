@@ -1,6 +1,6 @@
 # Tech Knowledge Base
 
-Notion을 CMS로 활용한 공개 IT 기술 학습 사이트입니다. 검증한 자료를 순서가 있는 코스로 안내하고, 나머지 자료는 자료실에서 검색과 필터로 찾을 수 있습니다.
+Notion을 CMS로 활용한 공개 IT 기술 학습 사이트입니다. 자료를 순서가 있는 코스로 안내하고, 나머지 자료는 자료실에서 검색과 필터로 찾을 수 있습니다.
 
 - **요구사항**: [docs/PRD.md](docs/PRD.md)
 - **Notion 설정과 콘텐츠 운영**: [docs/notion-setup.md](docs/notion-setup.md)

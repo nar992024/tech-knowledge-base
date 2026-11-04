@@ -2,7 +2,7 @@
 
 ## 배포 전
 
-- [ ] 공개할 코스의 단계가 모두 `검증 완료`인지 Notion에서 확인
+- [ ] 공개할 코스의 단계와 `검증 완료` 표시가 맞는지 Notion에서 확인
 - [ ] `npm run check-all` 통과
 - [ ] `npm run test:e2e` 통과
 - [ ] `npm run links:check` 실행 후 끊어진 링크 정리, 직접 확인 대상 링크 확인

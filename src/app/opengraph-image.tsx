@@ -15,12 +15,12 @@ export default function OpenGraphImage() {
           flexDirection: 'column',
           justifyContent: 'center',
           padding: 96,
-          background: '#0f3d3a',
-          color: '#ffffff',
+          background: '#0a1120',
+          color: '#e8effa',
         }}
       >
         <div style={{ fontSize: 84, fontWeight: 700 }}>Tech Knowledge Base</div>
-        <div style={{ fontSize: 38, marginTop: 28, color: '#c7e6e2' }}>
+        <div style={{ fontSize: 38, marginTop: 28, color: '#65dbed' }}>
           Learning paths for AI coding and agent engineering
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { ExternalLinkButton } from '@/components/link/external-link-button'
 import { LinkBadges } from '@/components/link/link-badges'
+import { VerifiedBadge } from '@/components/link/verified-badge'
 import type { CourseStep } from '@/types/content'
 
 interface CourseStepItemProps {
@@ -21,7 +22,12 @@ export function CourseStepItem({ step, position }: CourseStepItemProps) {
           <span className="sr-only">{position}단계: </span>
           {step.title}
         </h3>
-        <p className="mt-1">{step.purpose}</p>
+        {step.verified && (
+          <div className="mt-2">
+            <VerifiedBadge />
+          </div>
+        )}
+        <p className="mt-2">{step.purpose}</p>
         <LinkBadges link={step} level={step.level} className="mt-3" />
         <ExternalLinkButton
           url={step.url}

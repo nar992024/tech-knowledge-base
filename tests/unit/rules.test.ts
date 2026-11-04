@@ -13,7 +13,7 @@ const step = (id: string, order: number, overrides = {}) =>
   })
 
 describe('buildSiteContent', () => {
-  it('코스 단계에는 공개이면서 검증 완료인 링크만 넣는다', () => {
+  it('코스 단계에는 검증 여부와 상관없이 공개 링크만 넣는다', () => {
     const { content } = buildSiteContent({
       courses: [makeCourse()],
       links: [
@@ -23,7 +23,10 @@ describe('buildSiteContent', () => {
       ],
     })
 
-    expect(content.courses[0]?.steps.map(link => link.id)).toEqual(['IT-001'])
+    expect(content.courses[0]?.steps.map(link => link.id)).toEqual([
+      'IT-001',
+      'IT-002',
+    ])
   })
 
   it('비공개 코스와 표시할 단계가 없는 코스는 숨긴다', () => {
@@ -35,7 +38,7 @@ describe('buildSiteContent', () => {
       ],
       links: [
         step('IT-001', 1, { course: 'hidden' }),
-        step('IT-002', 1, { course: 'empty', verified: false }),
+        step('IT-002', 1, { course: 'empty', published: false }),
         step('IT-003', 1),
       ],
     })
@@ -82,12 +85,13 @@ describe('buildSiteContent', () => {
 
   it('자료실에는 공개 링크를 모두 넣고, 보이는 단계에만 코스를 연결한다', () => {
     const { content } = buildSiteContent({
-      courses: [makeCourse()],
+      courses: [makeCourse(), makeCourse({ slug: 'hidden', published: false })],
       links: [
         step('IT-001', 1),
         step('IT-002', 2, { verified: false }),
-        makeLink({ id: 'IT-003' }),
-        makeLink({ id: 'IT-004', published: false }),
+        step('IT-003', 1, { course: 'hidden' }),
+        makeLink({ id: 'IT-004' }),
+        makeLink({ id: 'IT-005', published: false }),
       ],
     })
 
@@ -95,9 +99,11 @@ describe('buildSiteContent', () => {
       'IT-001',
       'IT-002',
       'IT-003',
+      'IT-004',
     ])
     expect(content.library[0]?.courseRef?.slug).toBe('course-a')
-    expect(content.library[1]?.courseRef).toBeNull()
+    expect(content.library[1]?.courseRef?.slug).toBe('course-a')
     expect(content.library[2]?.courseRef).toBeNull()
+    expect(content.library[3]?.courseRef).toBeNull()
   })
 })
