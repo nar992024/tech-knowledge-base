@@ -69,7 +69,7 @@ test.describe('코스', () => {
 test.describe('자료실', () => {
   test('공개 링크를 모두 보여 주고 비공개 링크는 숨긴다', async ({ page }) => {
     await page.goto('/library')
-    await expect(page.getByRole('status')).toHaveText('전체 66개 중 66개')
+    await expect(page.getByRole('status')).toHaveText('전체 59개 중 59개')
     await expect(page.getByText('하네스 엔지니어링 우선론')).toHaveCount(0)
     await expect(page.getByText('미검증')).toHaveCount(0)
     await expect(page.getByText(/검증 완료 표시가 없는 자료/)).toBeVisible()
@@ -78,12 +78,12 @@ test.describe('자료실', () => {
   test('검색 조건을 주소에 저장하고 공유 주소로 복원한다', async ({ page }) => {
     await page.goto('/library')
     await page.getByLabel('검색어').fill('playwright')
-    await expect(page.getByRole('status')).toHaveText('전체 66개 중 4개')
+    await expect(page.getByRole('status')).toHaveText('전체 59개 중 4개')
     await expect(page).toHaveURL('/library?q=playwright')
 
     await page.goto('/library?q=playwright&type=%EA%B0%95%EC%9D%98')
     await expect(page.getByLabel('검색어')).toHaveValue('playwright')
-    await expect(page.getByRole('status')).toHaveText('전체 66개 중 1개')
+    await expect(page.getByRole('status')).toHaveText('전체 59개 중 1개')
     await expect(
       page.getByRole('heading', { name: '인프런 Playwright 기초' })
     ).toBeVisible()
@@ -93,7 +93,7 @@ test.describe('자료실', () => {
     await page.goto('/library')
     await page.getByLabel('카테고리').click()
     await page.getByRole('option', { name: '보안' }).click()
-    await expect(page.getByRole('status')).toHaveText('전체 66개 중 2개')
+    await expect(page.getByRole('status')).toHaveText('전체 59개 중 2개')
 
     await page.getByRole('link', { name: 'AI 코드 품질과 테스트 코스' }).click()
     await expect(page).toHaveURL('/courses/ai-code-quality')
@@ -104,13 +104,13 @@ test.describe('자료실', () => {
     await expect(page.getByText('조건에 맞는 자료가 없습니다')).toBeVisible()
 
     await page.getByRole('button', { name: '조건 초기화' }).click()
-    await expect(page.getByRole('status')).toHaveText('전체 66개 중 66개')
+    await expect(page.getByRole('status')).toHaveText('전체 59개 중 59개')
     await expect(page).toHaveURL('/library')
   })
 
   test('잘못된 필터 값은 전체로 처리한다', async ({ page }) => {
     await page.goto('/library?category=none&type=none')
-    await expect(page.getByRole('status')).toHaveText('전체 66개 중 66개')
+    await expect(page.getByRole('status')).toHaveText('전체 59개 중 59개')
   })
 })
 

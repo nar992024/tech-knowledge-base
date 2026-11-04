@@ -149,8 +149,8 @@ describe('data/seed.json', () => {
 
   it('PRD의 수량과 일치한다', () => {
     expect(seed.courses).toHaveLength(5)
-    expect(seed.links).toHaveLength(69)
-    expect(seed.links.filter(link => link.published)).toHaveLength(66)
+    expect(seed.links).toHaveLength(62)
+    expect(seed.links.filter(link => link.published)).toHaveLength(59)
     expect(seed.links.filter(link => link.course)).toHaveLength(24)
   })
 
