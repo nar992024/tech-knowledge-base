@@ -12,16 +12,18 @@
 - [x] 메타데이터, sitemap, robots, Open Graph 이미지
 - [x] 초기 데이터 입력 스크립트와 링크 점검 스크립트
 - [x] E2E, 접근성 테스트 (`data/seed.json` 기준)
+- [x] Notion에 코스 DB와 링크 DB 생성, Integration 연결
+- [x] 환경 변수 설정 후 초기 데이터 입력
+- [x] 실제 Notion 연결 상태로 조회와 5분 내 반영 확인
+- [x] GitHub 저장소 연결과 Vercel 배포 (https://tech-kb-plum.vercel.app)
+- [x] 코스 단계를 공개 링크 기준으로 표시하고 `검증 완료` 배지로 구분
+- [x] 신규 자료 추가 스킬(`/add-site`)과 Vercel 배포 서브에이전트
 
 ## 남은 일
 
-- [ ] Notion에 코스 DB와 링크 DB 생성, Integration 연결
-- [ ] 환경 변수 설정 후 초기 데이터 입력
-- [ ] 실제 Notion 연결 상태로 조회와 5분 내 반영 확인
 - [ ] 코스 링크 20개 원문 검증, 목적, 난이도, 예상 시간 다듬기
 - [ ] 이용 조건 공란 10개 확인
 - [ ] `IT-004`와 `IT-062`의 중복 여부 판단
-- [ ] Vercel 배포 ([체크리스트](deployment-checklist.md))
 
 ## MVP 이후 후보
 

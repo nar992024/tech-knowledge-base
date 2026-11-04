@@ -213,5 +213,8 @@
     /* 자료실처럼 긴 페이지에서도 빛 번짐이 화면 크기를 기준으로 유지되게 한다 */
     background-attachment: fixed;
     letter-spacing: var(--tracking-normal);
+    /* 한글이 단어 중간에서 끊기지 않게 하고, 긴 영문과 주소만 필요할 때 줄바꿈한다 */
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
 }
