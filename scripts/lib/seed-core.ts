@@ -80,7 +80,7 @@ const optionalSelect = (name: string | null) => ({
   select: name ? { name } : null,
 })
 
-function buildLinkProperties(
+export function buildLinkProperties(
   link: SeedData['links'][number],
   coursePageIds: ReadonlyMap<string, string>
 ): PageProperties {

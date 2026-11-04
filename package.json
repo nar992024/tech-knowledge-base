@@ -15,6 +15,7 @@
     "test:e2e": "playwright test",
     "check-all": "npm run typecheck && npm run lint && npm run format:check && npm run test",
     "notion:seed": "tsx scripts/seed-notion.ts",
+    "notion:add-link": "tsx scripts/add-link.ts",
     "links:check": "tsx scripts/check-links.ts",
     "prepare": "husky"
   },

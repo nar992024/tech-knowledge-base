@@ -33,6 +33,7 @@ npm run build       # 프로덕션 빌드
 npm run check-all   # 타입, 린트, 포맷, 단위 테스트 통합 실행 (권장)
 npm run test:e2e    # 프로덕션 빌드 기반 E2E, 접근성 테스트
 npm run notion:seed # data/seed.json을 Notion에 입력
+npm run notion:add-link -- <JSON 파일> [--dry-run] # 새 링크를 Notion에 추가 (/add-site 스킬에서 사용)
 npm run links:check # 공개 링크 응답 점검
 
 # UI 컴포넌트
