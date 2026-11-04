@@ -21,7 +21,8 @@ fi
 # JSON 입력에서 이벤트명과 메시지 추출 (표준 입력은 한 번만 읽을 수 있어 먼저 저장한다)
 INPUT=$(cat)
 EVENT=$(printf '%s' "$INPUT" | jq -r '.hook_event_name')
-MESSAGE=$(printf '%s' "$INPUT" | jq -r '.message')
+# 멘션이 동작하지 않게 Slack 특수문자를 바꾼다
+MESSAGE=$(printf '%s' "$INPUT" | jq -r '.message // "(내용 없음)" | gsub("&"; "&amp;") | gsub("<"; "&lt;") | gsub(">"; "&gt;")')
 
 # 프로젝트명 추출
 PROJECT_NAME=$(basename "$CLAUDE_PROJECT_DIR")
@@ -34,8 +35,9 @@ echo "DEBUG: MESSAGE = '$MESSAGE'" >&2
 echo "DEBUG: PROJECT_NAME = '$PROJECT_NAME'" >&2
 echo "DEBUG: TIMESTAMP = '$TIMESTAMP'" >&2
 
-# JSON payload 생성
-PAYLOAD=$(printf '{"channel": "#claude-notifications", "username": "Claude Code", "text": "🔔 권한 요청 알림\n\n프로젝트: %s\n이벤트: %s\n내용: %s\n시간: %s\n\nClaude Code에서 알림이 도착했습니다.", "icon_emoji": ":bell:"}' "$PROJECT_NAME" "$EVENT" "$MESSAGE" "$TIMESTAMP")
+# JSON payload 생성 (메시지에 따옴표가 있어도 깨지지 않게 jq로 만든다)
+TEXT=$(printf '🔔 권한 요청 알림\n\n프로젝트: %s\n이벤트: %s\n내용: %s\n시간: %s\n\nClaude Code에서 알림이 도착했습니다.' "$PROJECT_NAME" "$EVENT" "$MESSAGE" "$TIMESTAMP")
+PAYLOAD=$(printf '%s' "$TEXT" | jq -Rs '{channel: "#claude-notifications", username: "Claude Code", text: ., icon_emoji: ":bell:"}')
 
 echo "DEBUG: PAYLOAD = '$PAYLOAD'" >&2
 

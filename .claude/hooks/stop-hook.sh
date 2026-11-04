@@ -24,16 +24,37 @@ PROJECT_NAME=$(basename "$CLAUDE_PROJECT_DIR")
 # 현재 시간
 TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
 
-# JSON 입력에서 정보 추출 (있는 경우)
-REASON=$(jq -r '.hook_event_name')
+# JSON 입력에서 정보 추출 (표준 입력은 한 번만 읽을 수 있어 먼저 저장한다)
+INPUT=$(cat)
+REASON=$(printf '%s' "$INPUT" | jq -r '.hook_event_name')
+
+# 마지막 응답을 가져온다. 입력에 없으면 대화 기록 파일에서 찾는다
+LAST_MESSAGE=$(printf '%s' "$INPUT" | jq -r '.last_assistant_message // empty')
+TRANSCRIPT=$(printf '%s' "$INPUT" | jq -r '.transcript_path // empty')
+if [ -z "$LAST_MESSAGE" ] && [ -f "$TRANSCRIPT" ]; then
+    LAST_MESSAGE=$(jq -rs '[.[] | select(.type == "assistant") | .message.content[]? | select(.type == "text") | .text] | last // empty' "$TRANSCRIPT")
+fi
+
+# 외부 채널로 나가는 값이므로 비밀값 형식을 가리고, 멘션이 동작하지 않게 특수문자를 바꾼 뒤 50자로 줄인다
+SUMMARY=$(printf '%s' "$LAST_MESSAGE" | jq -Rrs '
+  gsub("(ntn_|secret_|ghp_|gho_|sk-)[A-Za-z0-9_-]{10,}"; "[masked]")
+  | gsub("https://hooks\\.slack\\.com/[^\\s]+"; "[masked]")
+  | gsub("[*`#|]"; "")
+  | gsub("\\s+"; " ")
+  | gsub("&"; "&amp;") | gsub("<"; "&lt;") | gsub(">"; "&gt;")
+  | ltrimstr(" ") | rtrimstr(" ")
+  | if length > 50 then .[:47] + "..." else . end
+')
+[ -n "$SUMMARY" ] || SUMMARY="(내용 없음)"
 
 # 디버깅을 위한 변수 출력 (stderr로 출력)
 echo "DEBUG: REASON = '$REASON'" >&2
 echo "DEBUG: PROJECT_NAME = '$PROJECT_NAME'" >&2
 echo "DEBUG: TIMESTAMP = '$TIMESTAMP'" >&2
 
-# JSON payload 생성
-PAYLOAD=$(printf '{"channel": "#claude-notifications", "username": "Claude Code", "text": "✅ 작업 완료 알림\n\n프로젝트: %s\n이벤트: %s\n시간: %s\n\nClaude Code 작업이 완료되었습니다.", "icon_emoji": ":white_check_mark:"}' "$PROJECT_NAME" "$REASON" "$TIMESTAMP")
+# JSON payload 생성 (응답에 따옴표가 있어도 깨지지 않게 jq로 만든다)
+TEXT=$(printf '✅ 작업 완료 알림\n\n프로젝트: %s\n이벤트: %s\n내용: %s\n시간: %s\n\nClaude Code 작업이 완료되었습니다.' "$PROJECT_NAME" "$REASON" "$SUMMARY" "$TIMESTAMP")
+PAYLOAD=$(printf '%s' "$TEXT" | jq -Rs '{channel: "#claude-notifications", username: "Claude Code", text: ., icon_emoji: ":white_check_mark:"}')
 
 echo "DEBUG: PAYLOAD = '$PAYLOAD'" >&2
 
