@@ -51,7 +51,6 @@ test-notion-*.js
 # 개인 도구 설정
 .claude/settings.local.json
 .mcp.json
-shrimp_data/
 
 # 원본 자료 (내용은 data/seed.json에 반영됨)
 IT_link*.html
